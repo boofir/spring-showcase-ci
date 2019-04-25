@@ -22,22 +22,12 @@ To get the code:
 -------------------
 Clone the repository:
 
-    $ git clone git://github.com/SpringSource/spring-mvc-showcase.git
+    $ git clone https://github.com/boofir/spring-showcase-ci.git
 
-If this is your first time using Github, review http://help.github.com to learn the basics.
 
-To run the application:
+To run the application from docker machine:
 -------------------	
-From the command line with Maven:
-
-    $ cd spring-mvc-showcase
-    $ mvn jetty:run 
+ 
+docker run -p 8080:8080 ob7777/ci-spring-showcase 
 
 Access the deployed web application at: http://localhost:8080/spring-mvc-showcase/
-
-Note:
--------------------
-
-This showcase originated from a [blog post](http://blog.springsource.com/2010/07/22/spring-mvc-3-showcase/) and was adapted into a SpringOne presentation called [Mastering MVC 3](http://www.infoq.com/presentations/Mastering-Spring-MVC-3).
-
-A screen cast showing the showcase in action is [available in QuickTime format](http://s3.springsource.org/MVC/mvc-showcase-screencast.mov).
