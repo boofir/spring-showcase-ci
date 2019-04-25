@@ -1,1 +1,12 @@
 language: java
+install: mvn install
+
+services:
+- docker
+
+script:
+- echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+- docker build -t ci-spring-showcase .
+- docker images
+- docker tag ci-spring-showcase $DOCKER_USERNAME/ci-spring-showcase
+- docker push $DOCKER_USERNAME/ci-spring-showcase
