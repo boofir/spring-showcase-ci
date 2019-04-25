@@ -10,5 +10,4 @@ script:
 - export VAR << version
 - docker login -u "$DOCKER_USERNAME" -p "$pass"
 - docker build -t ci-spring-showcase .
-- docker tag ci-spring-showcase $DOCKER_USERNAME/ci-spring-showcase
-- docker push $DOCKER_USERNAME/ci-spring-showcase:$VAR
+- ./docker.sh
