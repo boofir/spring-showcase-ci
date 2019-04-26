@@ -11,4 +11,4 @@ services:
 script:
 - docker login -u "$DOCKER_USERNAME" -p "$pass"
 - docker build -t ci-spring-showcase .
-- ./docker.sh
+- sh docker.sh
