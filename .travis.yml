@@ -1,5 +1,7 @@
 language: java
+sudo: required
 install: mvn install
+
 env:
   - DOCKER_USERNAME="ob7777"
 
@@ -7,7 +9,6 @@ services:
 - docker
 
 script:
-- export VAR << version
 - docker login -u "$DOCKER_USERNAME" -p "$pass"
 - docker build -t ci-spring-showcase .
 - ./docker.sh
