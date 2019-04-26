@@ -1,0 +1,26 @@
+- name: Run container image
+  hosts: <HOST NAME>
+  become: true
+
+  tasks:
+    - name: Adding epel-release package
+      yum: name=epel-release state=latest
+
+    - name: Install pip
+      yum: name=python-pip state=present
+
+    - name: Install docker-py
+      pip: name=docker-py
+
+    - name: Pull docker image
+      docker_image:
+        name: ob7777/ci-spring-showcase:latest
+
+    - name: Running docker container
+    docker_container:
+        name: ci-spring-showcase
+        image: ob7777/ci-spring-showcase:latest
+        state: started
+        ports:
+        - "8080:8080"
+        detach: true

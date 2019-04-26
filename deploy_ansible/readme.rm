@@ -1,0 +1,71 @@
+Introduction
+-------------------
+Docker is a highly optimized platform for building and running containers on servers.
+It manage containers in a highly efficient manner and works incredibly well with Ansible.
+This introduction is base on RHEL/CentOs OS.
+For example please see the docker_deploy.yml file.
+
+Prerequisites
+-------------------
+Before you begin this guide you'll need the following:
+Ansible installed on your machine.
+
+
+Edit Ansible playbook
+-------------------
+Create a new Ansible playbook. The directory layout should look like:
+docker_project/
+    docker_deploy.yml
+	
+
+Edit ansible playbook file to pull and run the image
+-------------------
+The playbook uses the pull image and run docker container.
+We need to provide name for the image, and set the state parameter of the image to be started to run the contanier.
+
+The playbook file should look like:
+	
+	- name: Run container image
+	hosts: <HOST NAME>
+	become: true
+
+    tasks:
+	- name: Pull docker image
+      docker_image:
+        name: ob7777/ci-spring-showcase:latest
+
+    - name: Running docker container
+      docker_container:
+        name: ci-spring-showcase
+        image: ob7777/ci-spring-showcase:latest
+        state: started
+        ports:
+        - "8080:8080"
+        detach: true
+
+
+Prerequisites on the deployed machine:
+-------------------
+Ansible playbook need to install docker-py on the Docker host.
+Ansible’s Docker integration requires you to install this python library.
+We use pip to install the required python library. So we add also a task that install pip before docker-py.
+
+The playbook file should look like:
+
+	- name: Adding epel-release package
+      yum: name=epel-release state=latest
+
+    - name: Install pip
+      yum: name=python-pip state=present
+
+    - name: Install docker-py
+      pip: name=docker-py
+
+
+Running the playbook
+-------------------
+Run the playbook by using the following command on your workstation:
+	$ ansible-playbook <playbook file name>.yml 
+
+e.g:
+	$ ansible-playbook docker_deploy.yml 
