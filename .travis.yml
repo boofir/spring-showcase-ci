@@ -3,12 +3,25 @@ sudo: required
 install: mvn install
 
 env:
-  - DOCKER_USERNAME="ob7777"
+  global:
+    - IMAGE_NAME=ob7777/ci-spring-showcase
+    - REGISTRY_USER=ob7777
 
-services:
-- docker
-
+before_script:
+  - version="$(cat version)"
+  - docker pull "$IMAGE_NAME" || true
 script:
-- docker login -u "$DOCKER_USERNAME" -p "$pass"
-- docker build -t ci-spring-showcase .
-- sh docker.sh
+  - docker build --pull --cache-from "$IMAGE_NAME" --tag "$IMAGE_NAME" .
+
+after_script:
+  - docker images
+
+before_deploy:
+  - docker login -u "$REGISTRY_USER" -p "$pass"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:latest"
+  - docker tag "$IMAGE_NAME" "${IMAGE_NAME}:${version}"
+deploy:
+  provider: script
+  script: docker push "${IMAGE_NAME}:latest" && docker push "${IMAGE_NAME}:${version}"
+  on:
+    branch: master
